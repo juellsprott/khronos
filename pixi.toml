@@ -34,6 +34,7 @@ ros-jazzy-cv-bridge = "*"
 
 [pypi-dependencies]
 rerun-sdk = ">=0.21"
+semantic-inference = { path = "src/semantic_inference/semantic_inference", editable = true, extras=["openset"] }
 
 [target.linux.dependencies]
 libgl-devel = "*"
