@@ -62,7 +62,7 @@ class TrackingIntegrator {
     // Duration in seconds a voxel can be not observed to still count as occupied for
     // motion detection to compensate sensor sparsity or noise. Note that this value
     // must be larger than the frame rate to allow continuous tracking.
-    float temporal_buffer = 1.f;
+    float temporal_buffer = 3.f;
 
     // Consecutive duration in seconds a voxel must be free to become ever-free.
     float burn_in_period = 1.f;

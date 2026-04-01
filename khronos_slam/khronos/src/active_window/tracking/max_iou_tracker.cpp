@@ -156,7 +156,7 @@ void declare_config(MaxIoUTracker::Config& config) {
 
 MaxIoUTracker::MaxIoUTracker(const Config& config)
     : config(config::checkValid(config)), grid_(config.voxel_size) {
-  // Define the right functionality for the track_by mode.
+  // Define the right functionality for the track_by mode./
   setup();
 }
 

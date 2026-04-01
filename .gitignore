@@ -64,6 +64,9 @@ tmp.py
 # Catkin custom files
 CATKIN_IGNORE
 
+# Data symlinks
+data
+
 # Local utilities
 Notes.txt
 *compile_commands.json

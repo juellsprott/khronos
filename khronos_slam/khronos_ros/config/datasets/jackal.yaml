@@ -1,5 +1,5 @@
 
-# uHumans2 dataset intrinsics.
+# Daheng camera intrinsics (from recorded camera_info).
 type: RosInput
 tf_verbosity: 1
 clear_queue_on_fail: true
@@ -10,7 +10,13 @@ inputs:
       type: ClosedSetImageReceiver
       input_separation_s: 0.04 # Limit Input rate to max 10 Hz
     sensor:
-      type: camera_info
+      type: camera
+      width: 720
+      height: 520
+      fx: 467.94987
+      fy: 467.835555
+      cx: 374.806165
+      cy: 265.949677
       min_range: $(var sensor_min_range)
       max_range: $(var sensor_max_range)
       extrinsics:

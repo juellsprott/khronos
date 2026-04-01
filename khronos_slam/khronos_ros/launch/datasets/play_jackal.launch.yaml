@@ -13,6 +13,8 @@ launch:
   - arg: {name: use_openset_semantics, default: 'false'}
   - arg: {name: labelspace_name, default: ade20k_indoor}
   - arg: {name: segmenter_config, default: $(find-pkg-share khronos_ros)/config/openset/sam_clip.yaml}
+  # Set to true if the bag already contains /tf and /tf_static
+  - arg: {name: bag_has_tf, default: 'false'}
 
   # ============ Set sim time parameter ============
   - set_parameter:
@@ -21,7 +23,7 @@ launch:
 
   # ============ Play the bag ============
   - executable:
-      cmd: ros2 run ianvs play_rosbag $(var bag_path) --rate $(var play_rate) --clock
+      cmd: ros2 run ianvs play_rosbag $(var bag_path) --rate $(var play_rate) --clock --delay 5
       name: dataset_player
       output: screen
       shell: true
@@ -37,6 +39,7 @@ launch:
 
   # ============ Static TFs ============
   - include:
+      if: $(not $(var bag_has_tf))
       file: $(find-pkg-share khronos_ros)/launch/datasets/tf/jackal_static_tf.launch.yaml
 
   # ============ Odometry to TF ============
@@ -47,6 +50,7 @@ launch:
   # This was solved in ROS1 by running Kimera-VIO, but we don't have a ROS2 port of Kimera
   # yet, so we need this node.
   - node:
+      if: $(not $(var bag_has_tf))
       pkg: khronos_ros
       exec: odom_to_tf.py
       name: odom_to_tf

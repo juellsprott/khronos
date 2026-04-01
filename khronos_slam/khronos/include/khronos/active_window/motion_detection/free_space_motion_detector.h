@@ -90,7 +90,7 @@ class FreeSpaceMotionDetector : public MotionDetector {
 
     // If set, only consider points above this z-coordinate in the sensor frame. This is a simple
     // form of ground plane removal.
-    float min_z_coordinate = -10000.f;
+    float min_z_coordinate = 0.3f;
 
     // Number of threads to use.
     int num_threads = hydra::GlobalInfo::instance().getConfig().default_num_threads;

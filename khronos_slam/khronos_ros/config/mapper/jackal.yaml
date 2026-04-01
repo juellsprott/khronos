@@ -1,10 +1,10 @@
 # Definition of shared parameters (not read by the system).
 # TODO(lschmid): Maybe these should be unified in globals, have more flexibility like this though.
 shared_parameters:
-  max_range: &max_range 3 # m
+  max_range: &max_range 5 # m
   temporal_window: &temporal_window 3 # s
   active_window_threads: &active_window_threads -1 # Num threads in the AW to give resources to other parts, too. Use -1 for hardware concurrency.
-  map_update_frequency: &map_update_frequency 300 # -1 to disable, 0 for on loop closure, n for every n frames.
+  map_update_frequency: &map_update_frequency 1 # -1 to disable, 0 for on loop closure, n for every n frames.
 
 # =============================== Experiment Setup ===============================
 finish_processing_on_shutdown: true
@@ -20,7 +20,7 @@ experiment:
 
 # =============================== Global & Pipeline properties ===============================
 # Global properties.
-global_frame_name: "world"
+global_frame_name: "map"
 default_verbosity: 2 # Set global verbosity. Can be overridden for individual modules below.
 default_num_threads: -1 # -1 for all, 1 sets the program to single threaded. Can be overridden by individual modules below.
 
@@ -105,7 +105,7 @@ frontend:
   overwrite_mesh_timestamps: true
 
   pgmo:
-    time_horizon: 60.0
+    time_horizon: 50.0
     d_graph_resolution: 2.5
     mesh_resolution: 0.005 # smaller than voxel size
   freespace_places:

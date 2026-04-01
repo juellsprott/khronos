@@ -10,7 +10,7 @@ launch:
   - arg: {name: log_vio, default: 'false'}
 
   # Semantics: Configure to use pre-recorded / Openset
-  - arg: {name: use_prerecorded_semantics, default: 'false'}
+  - arg: {name: use_prerecorded_semantics, default: 'true'}
   - arg: {name: use_openset_semantics, default: 'true'}
   - arg: {name: use_gt_frame, default: 'false'}
 
@@ -26,20 +26,21 @@ launch:
   - arg: {name: rviz_path, default: $(find-pkg-share khronos_ros)/config/rviz/jackal.rviz}
 
   # Dataset arguments
-  - arg: {name: dataset, default: khronos_mezzanine_long2_w_semantics}
-  - arg: {name: bag_dir, default: /data/datasets/khronos/mezzanine}
+  - arg: {name: dataset, default: 2026-03-31_run3_openset_segmented}
+  - arg: {name: bag_dir, default: /home/juell/Documents/lely/Khronos-SLAM/data}
   - arg: {name: play_rate, default: '1.0'}
-  - arg: {name: compressed_rgb, default: 'true'}
+  - arg: {name: compressed_rgb, default: 'false'}
+  - arg: {name: bag_has_tf, default: 'true'}
 
   # ============ Auto-generated args ============
-  # Sensing frame - matching ROS1 configuration
-  - arg: {name: sensor_frame, default: $(var robot_ns)/left_cam}
-  - arg: {name: robot_frame, default: $(var robot_ns)/base}
-  - arg: {name: map_frame, default: $(var robot_ns)/map}
-  - arg: {name: odom_frame, default: $(var robot_ns)/odom}
+  # Frames from bag TF tree: map → odom → base_footprint → base_link → stereo_camera_base → camera_link → camera_left_optical_frame
+  - arg: {name: sensor_frame, default: camera_left_optical_frame}
+  - arg: {name: robot_frame, default: base_footprint}
+  - arg: {name: map_frame, default: map}
+  - arg: {name: odom_frame, default: odom}
   # Sensor range parameters
-  - arg: {name: sensor_min_range, default: '0.1'}
-  - arg: {name: sensor_max_range, default: '5.0'}
+  - arg: {name: sensor_min_range, default: '0.4'}
+  - arg: {name: sensor_max_range, default: '9.0'}
 
   # Semantics: Use these for ground truth semantic labels from uH2
   - arg: {name: semantic_colormap_config, default: ''}
@@ -49,14 +50,12 @@ launch:
   # Use extra_yaml to pass semantic config inline
   - let: {name: extra_yaml, value: '{semantic_colormap_file: $(var semantic_colormap_config)}'}
 
-  # Input topics
-  - arg: {name: rgb_topic, default: /$(var robot_ns)/forward/color/image_raw}
-  - arg: {name: rgb_info_topic, default: /$(var robot_ns)/forward/color/camera_info}
-  - arg: {name: depth_topic, default: /$(var robot_ns)/forward/depth/image_rect_raw}
-  # Label topic: use pre-recorded from bag OR live semantic inference
-  - arg:
-      name: label_topic
-      default: $(if $(var use_prerecorded_semantics) /oneformer/labels/image_raw /semantic_inference/semantic/image_raw)
+  # Input topics (matching mcap bag topics)
+  - arg: {name: rgb_topic, default: /color/image_raw}
+  - arg: {name: rgb_info_topic, default: /camera/daheng/left/camera_info}
+  - arg: {name: depth_topic, default: /camera/daheng/depth_image}
+  # Label topic: pre-recorded openset labels from bag
+  - arg: {name: label_topic, default: /openset_node/segmented}
 
   # Dataset - ROS2 bags are directories, not .bag files
   - arg: {name: bag_path, default: $(var bag_dir)/$(var dataset)}
@@ -78,6 +77,7 @@ launch:
         - {name: use_prerecorded_semantics, value: $(var use_prerecorded_semantics)}
         - {name: use_openset_semantics, value: $(var use_openset_semantics)}
         - {name: labelspace_name, value: $(var labelspace_name)}
+        - {name: bag_has_tf, value: $(var bag_has_tf)}
 
   # ============ Include Khronos main launch ============
   - include:
@@ -104,3 +104,4 @@ launch:
         - {name: label_topic, value: $(var label_topic)}
         - {name: sensor_min_range, value: $(var sensor_min_range)}
         - {name: sensor_max_range, value: $(var sensor_max_range)}
+        - {name: start_visualizer, value: 'true'}
