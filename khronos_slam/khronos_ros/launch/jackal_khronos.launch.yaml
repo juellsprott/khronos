@@ -27,7 +27,7 @@ launch:
 
   # Dataset arguments
   - arg: {name: dataset, default: 2026-03-31_run3_openset_segmented}
-  - arg: {name: bag_dir, default: /home/juell/Documents/lely/Khronos-SLAM/data}
+  - arg: {name: bag_dir, default: /home/juell/data/lely/rosbags/raw}
   - arg: {name: play_rate, default: '1.0'}
   - arg: {name: compressed_rgb, default: 'false'}
   - arg: {name: bag_has_tf, default: 'true'}
