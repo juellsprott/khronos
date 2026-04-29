@@ -67,6 +67,9 @@ CATKIN_IGNORE
 # Data symlinks
 data
 
+# Pixi environments
+.pixi/
+
 # Local utilities
 Notes.txt
 *compile_commands.json
